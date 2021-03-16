@@ -19,4 +19,4 @@ const client = require('redis').createClient() // see https://www.npmjs.com/pack
 const util = new RedisUtilities(client)
 ```
 
-## [Documentation](chickendevlab.github.io/redis-utilities)
+## [Documentation](https://chickendevlab.github.io/redis-utilities)

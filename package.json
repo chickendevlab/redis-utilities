@@ -1,6 +1,6 @@
 {
   "name": "redis-utilities",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Some utils for redis, based on node-redis (redis on npm)",
   "main": "src/index.js",
   "scripts": {
