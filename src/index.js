@@ -1,33 +1,45 @@
+const ScanUtils = require('./utils/scan')
+
+/**
+ * Main class of redis-utilities, contains all methods for redis.
+ */
 class RedisUtilities {
+
+    /**
+     * Constructor for RedisUtilities
+     * @param {Object} client Your redis client, created with <i>redis.createClient()</i>
+     */
     constructor(client) {
         this.client = client
+        this._scanner = new ScanUtils(client)
     }
 
-    getAllKeys(match, count = 1000) {
-        return new Promise(async (resolve, reject) => {
-            let cursor = 0
-            let keys = []
-            try {
-                let data = await scanAsync(cursor, 'MATCH', match, 'COUNT', count)
-                cursor = parseInt(data[0])
-                keys = keys.concat(data[1])
-            } catch (e) {
-                cursor = 0
-            }
+    /**
+     * Returns all keys of the selected database
+     * @param {number|string} count Count passed to the SCAN command
+     * @returns {Promise<string[]>} All keys in the selected database.
+     */
+    getAllKeys(count = 1000){
+        return this._scanner.getAllMatchingKeys('*', )
+    }
 
-
-            while (cursor != 0) {
-                try {
-                    let data = await scanAsync(cursor, 'MATCH', match, 'COUNT', count)
-                    cursor = parseInt(data[0])
-                    keys = keys.concat(data[1])
-                } catch (e) {
-                    cursor = 0
-                }
-            }
-            resolve(keys)
-        })
+    /**
+     * Returns all keys in selected database matching match
+     * @param {*} match String used to filter keys. Supported wildcards:<br><br>Supported glob-style patterns:
+     * <ul>
+     * <ol>h?llo matches hello, hallo and hxllo</ol>
+     * <ol>h*llo matches hllo and heeeello</ol>
+     * <ol>h[ae]llo matches hello and hallo, but not hillo</ol>
+     * <ol>h[^e]llo matches hallo, hbllo, ... but not hello</ol>
+     * <ol>h[a-b]llo matches hallo and hbllo</ol><br>
+     * <a href="https://redis.io/commands/keys" target="_blank">Source</a>
+     * @param {*} count Argument passed to SCAN command
+     * @returns {Promise<string[]>} All matching keys
+     */
+    getAllMatchingKeys(match, count = 1000){
+        return this._scanner.getAllMatchingKeys(match, count)
     }
 }
 
+RedisUtilities.ScanUtils = ScanUtils
 module.exports = RedisUtilities

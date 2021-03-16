@@ -1,10 +1,10 @@
 {
   "name": "redis-utilities",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Some utils for redis, based on node-redis (redis on npm)",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "doc": "jsdoc src -R README.md -d ./docs"
   },
   "repository": {
     "type": "git",
