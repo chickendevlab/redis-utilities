@@ -33,11 +33,12 @@ class RedisUtilities {
      * <ol>h[^e]llo matches hallo, hbllo, ... but not hello</ol>
      * <ol>h[a-b]llo matches hallo and hbllo</ol><br>
      * <a href="https://redis.io/commands/keys" target="_blank">Source</a>
-     * @param {*} count Argument passed to SCAN command
+     * @param {string|null} type Type parameter passed to SCAN command. If present, only keys with the matching value will be returned
+     * @param {number|null} count Argument passed to SCAN command
      * @returns {Promise<string[]>} All matching keys
      */
-    getAllMatchingKeys(match, count = 1000){
-        return this._scanner.getAllMatchingKeys(match, count)
+    getAllMatchingKeys(match, type = null, count = 1000){
+        return this._scanner.getAllMatchingKeys(match, count, type)
     }
 }
 
